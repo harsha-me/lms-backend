@@ -5,17 +5,20 @@ import com.lms.enums.Role;
 import com.lms.enums.Status;
 import com.lms.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+   public DataInitializer(UserRepository userRepository,
+                       BCryptPasswordEncoder passwordEncoder) {
 
-    public DataInitializer(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+}
     @Override
     public void run(String... args) {
 
@@ -24,7 +27,7 @@ public class DataInitializer implements CommandLineRunner {
             User admin = User.builder()
                     .name("System Admin")
                     .email("admin@lms.com")
-                    .password("Admin@123")
+                    .password(passwordEncoder.encode("Admin@123"))
                     .role(Role.ADMIN)
                     .status(Status.APPROVED)
                     .build();
