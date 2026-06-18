@@ -32,7 +32,7 @@ public class AuthController {
     }
     @PostMapping("/login")
 public String login(@Valid @RequestBody LoginRequest request) {
-
+System.out.println("LOGIN API HIT");
     return authService.login(
             request.getEmail(),
             request.getPassword()

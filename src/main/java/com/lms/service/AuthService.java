@@ -78,8 +78,11 @@ public class AuthService {
 
     if(user.getStatus() != Status.APPROVED) {
         return "Account Not Approved Yet";
-    }
+    }   
 
-    return jwtService.generateToken(user.getEmail());
+    return jwtService.generateToken(
+        user.getEmail(),
+        user.getRole().name()
+);  
 }
 }
