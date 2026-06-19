@@ -6,7 +6,7 @@ import com.lms.dto.TeacherSignupRequest;
 import com.lms.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
+import com.lms.dto.LoginResponse;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -31,8 +31,11 @@ public class AuthController {
         return authService.registerTeacher(request);
     }
     @PostMapping("/login")
-public String login(@Valid @RequestBody LoginRequest request) {
-System.out.println("LOGIN API HIT");
+public LoginResponse login(
+        @Valid @RequestBody LoginRequest request) {
+
+    System.out.println("LOGIN API HIT");
+
     return authService.login(
             request.getEmail(),
             request.getPassword()

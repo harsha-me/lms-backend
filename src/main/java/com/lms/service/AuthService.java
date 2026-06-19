@@ -1,5 +1,6 @@
 package com.lms.service;
 
+import com.lms.dto.LoginResponse;
 import com.lms.dto.StudentSignupRequest;
 import com.lms.dto.TeacherSignupRequest;
 import com.lms.entity.User;
@@ -9,6 +10,7 @@ import com.lms.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Optional;
+import com.lms.dto.LoginResponse;
 @Service
 public class AuthService {
 
@@ -61,28 +63,42 @@ public class AuthService {
 
         return "Teacher Registration Submitted For Approval";
     }
-    public String login(String email, String password) {
+    public LoginResponse login(String email, String password) {
 
     Optional<User> optionalUser =
             userRepository.findByEmail(email);
 
     if(optionalUser.isEmpty()) {
-        return "Invalid Credentials";
+        return new LoginResponse(
+            "Invalid Credentials",
+            null
+    );
     }
 
     User user = optionalUser.get();
 
     if(!passwordEncoder.matches(password, user.getPassword())) {
-        return "Invalid Credentials";
+        return new LoginResponse(
+            "Invalid Credentials",
+            null
+    );
     }
 
     if(user.getStatus() != Status.APPROVED) {
-        return "Account Not Approved Yet";
+        return new LoginResponse(
+            "Account Not Approved Yet",
+            null
+    );
     }   
 
-    return jwtService.generateToken(
+    String token = jwtService.generateToken(
         user.getEmail(),
         user.getRole().name()
-);  
+);
+
+return new LoginResponse(
+        token,
+        user.getRole().name()
+); 
 }
 }
