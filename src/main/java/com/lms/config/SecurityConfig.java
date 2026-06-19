@@ -27,7 +27,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http)
                     .requestMatchers("/auth/**").permitAll()
                     .anyRequest().authenticated()
             )
-            .httpBasic(Customizer.withDefaults())
+            
             .addFilterBefore(
                     jwtFilter,
                     UsernamePasswordAuthenticationFilter.class
