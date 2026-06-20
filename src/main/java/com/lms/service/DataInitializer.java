@@ -19,22 +19,27 @@ public class DataInitializer implements CommandLineRunner {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
 }
+    
     @Override
-    public void run(String... args) {
+public void run(String... args) {
 
-        if (!userRepository.existsByEmail("admin@lms.com")) {
+    System.out.println("DataInitializer Running");
 
-            User admin = User.builder()
-                    .name("System Admin")
-                    .email("admin@lms.com")
-                    .password(passwordEncoder.encode("Admin@123"))
-                    .role(Role.ADMIN)
-                    .status(Status.APPROVED)
-                    .build();
+    if (!userRepository.existsByEmail("admin@lms.com")) {
 
-            userRepository.save(admin);
+        User admin = User.builder()
+                .name("System Admin")
+                .email("admin@lms.com")
+                .password(passwordEncoder.encode("Admin@123"))
+                .role(Role.ADMIN)
+                .status(Status.APPROVED)
+                .build();
 
-            System.out.println("Admin account created");
-        }
+        userRepository.save(admin);
+
+        System.out.println("Admin account created");
+    } else {
+        System.out.println("Admin already exists");
     }
+}
 }
